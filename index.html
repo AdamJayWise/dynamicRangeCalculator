@@ -1,0 +1,169 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300" rel="stylesheet"/>
+        <style>
+
+            body {
+                font-family: 'Open Sans Condensed', sans-serif;
+            }
+
+            .article {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 16px;
+                width : 800px;
+                margin : 20px;
+                line-height : 24px;
+            }
+
+            .mainEquation {
+                width : 754px;
+                display : flex;
+                flex-direction: row;
+                align-items : center;
+                justify-content : center;
+            }
+
+            .term {
+                position : relative;
+                box-shadow: 3px 3px 6px 1px gray;
+                padding : 2px;
+                font-size : 16px;
+                font-weight : bold;
+                display : inline-block;
+                margin : 3px;
+            }
+
+            .operator {
+                font-size : 25px;
+                font-weight : bold;
+                display : inline-block;
+                margin : 2px;
+            }
+
+            .eqInputDiv {
+                width : 100%;
+                
+            }
+
+            .inputLabel {
+                display : inline;
+            }
+
+            .eqInput {
+                box-sizing:border-box;
+                width : 100%;
+                border : none;
+                background-color : #ddd;
+                
+            }
+
+            #messages {
+                display : block;
+                width : 754px;
+                text-align : center;
+                padding : 5px 0 0 0;
+            }
+
+            #countDiv {
+                width : 80px;
+            }
+
+            #photonDiv {
+                width : 80px;
+            }
+
+            #gainDiv {
+                width : 130px;
+            }
+
+            #offsetDiv {
+                width : 100px;
+            }
+
+            #emGainDiv {
+                width : 80px;
+            }
+
+            #qeDiv {
+                width : 120px;
+            }
+
+            .tipButton {
+                display : inline-block;
+                position : relative;
+                top : -1px;
+                left : 4px;
+                background-color : rgb(48, 58, 136);
+                border-radius : 12.5px;
+                border : 1px solid white;
+                width : 18px;
+                height : 18px;
+                text-align : center;
+                line-height : 18px;
+                color : white;
+                font-size : 17px;
+                margin : -5px 0 0 0;
+                box-shadow : 1px 1px gray;
+            }
+
+            .messageDiv {
+                position : absolute;
+                width : 300px;
+                top : 100px;
+                background-color : white;
+                border : 3px solid rgb(48, 58, 136);
+                padding : 10px;
+                font-size : 19px;
+                font-weight : bold;
+            }
+
+            .screen {
+                opacity : 0.5;
+                background-color : white;
+                width : 100%;
+                height : 100%;
+                position : absolute;
+                top : 0px;
+                left : 0px;
+            }
+
+
+
+        </style>
+
+
+<body>
+
+    Dynamic Range Calculator
+
+    <div class = 'article'>
+        Choose a pre-defined camera or manually enter values to continue
+    </div>
+
+    <!--radio button group to choose camera type-->
+    <div id = "cameraTypeChooser">
+        <input type="radio" id="CCDType" name="cameraTypeValue" value="CCD" checked>
+        <label for="CCDType">CCD</label><br>
+        <input type="radio" id="EMCCDType" name="cameraTypeValue" value="EMCCD">
+        <label for="EMCCDType">EMCCD</label><br>
+        <input type="radio" id="sCMOSType" name="cameraTypeValue" value="sCMOS">
+        <label for="sCMOSType">sCMOS</label>
+    </div>
+
+    <!--input to represent active area pixel well depth-->
+    <div id = "parameterInputs">
+        
+    </div>
+
+
+    <div id = "messages">
+            Hello World
+    </div>
+
+
+
+</body>
+    <script src = "js/d3.min.js"></script>
+    <script src = "js/dynamicRangeCalc.js"></script>
+
+</html>
