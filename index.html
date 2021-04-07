@@ -140,6 +140,16 @@
         Choose a pre-defined camera or manually enter values to continue
     </div>
 
+    <hr>
+
+    <!-- select to choose camera -->
+    <select id = "cameraSelect"></select><br>
+
+    <!-- select to choose readout mode -->
+    <select id = "modeSelect"></select>
+
+    <hr>
+
     <!--radio button group to choose camera type-->
     <div id = "cameraTypeChooser">
         <input type="radio" id="CCDType" name="cameraTypeValue" value="CCD" checked>
@@ -149,6 +159,8 @@
         <input type="radio" id="sCMOSType" name="cameraTypeValue" value="sCMOS">
         <label for="sCMOSType">sCMOS</label>
     </div>
+
+
 
     <!--input to represent active area pixel well depth-->
     <div id = "parameterInputs">
