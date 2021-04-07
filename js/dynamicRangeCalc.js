@@ -129,6 +129,9 @@ modeSelect.on("change", function(){
     d3.select("#readOutNoiseInput").property("value", cameras[app.activeCamera]["readModes"][app.activeMode]['noise']).dispatch("change");
     d3.select("#sensitivityInput").property("value", cameras[app.activeCamera]["readModes"][app.activeMode]['gain']).dispatch("change");
 
+    if(app.cameraType=="EMCCD"){
+        d3.select("#EMGainInput").property("value", cameras[app.activeCamera]["readModes"][app.activeMode]['noise']).dispatch("change");
+    }
  
     
 
@@ -192,26 +195,30 @@ paramSetup.forEach(function(p){
 
 function calculateDynamicRange(){
 
-    var noteHTML = ''
+    // string of notes/comments to output with results, starts empty
+    var noteHTML = '';
 
     if ( (app["cameraType"] == 'CCD') || (app["cameraType"] == 'sCMOS') ){
         // in this case, dynamic range = min( (well depth / pre-amp gain) / readnoise, 2^bitdepth)
         var dynamicRangeInitial =  ( app["activeAreaWellDepth"] ) / app['readOutNoise'];
         app['dynamicRangeBeforeDigitization'] = dynamicRangeInitial;
 
-        var dynamicRangeWithSensitivity = app["activeAreaWellDepth"] / app['readOutNoise'] / app['sensitivity'] ;
-        if ( dynamicRangeWithSensitivity > 2**app['bitDepth']){
-            noteHTML += 'Dynamic range is limited by bit depth <br>';
-        }
-
         // find post-digitization dynamic range
-         app['dynamicRangeAfterDigitization'] =  Math.min(2**app['bitDepth'], dynamicRangeWithSensitivity);
+        var effectiveWellDepth = Math.min( app["activeAreaWellDepth"], 2**app["bitDepth"] * app['sensitivity']) ;
+        noteHTML += "Effective well depth is " + Math.round(effectiveWellDepth) + " e<sup>-</sup>"
+        if (effectiveWellDepth < app["activeAreaWellDepth"]){
+            noteHTML += ", limited by bit depth at analog to digital conversion (ADC) .";
+        }
+        app['dynamicRangeAfterDigitization'] =  effectiveWellDepth / app['readOutNoise'];
     }
 
     if ( app["cameraType"] == 'EMCCD'  ){
         // in this case, dynamic range = min( (well depth / pre-amp gain) / readnoise, 2^bitdepth)
         var effectiveReadNoise = Math.max(1, app['readOutNoise'] / app['EMGain']);
         var effectiveWellDepth = app['gainRegisterWellDepth'] / app['EMGain'];
+
+        noteHTML += "Effective read noise is " + Math.round(100 * app['readOutNoise'] / app['EMGain'])/100 + " e<sup>-</sup><br>"
+        noteHTML += "Effective well depth is " + Math.round(effectiveWellDepth) + " e<sup>-</sup>"
         
         var dynamicRangeInitial =  effectiveWellDepth / effectiveReadNoise;
         app['dynamicRangeBeforeDigitization'] = dynamicRangeInitial;
@@ -221,10 +228,10 @@ function calculateDynamicRange(){
         }
 
         // find post-digitization dynamic range
-         app['dynamicRangeAfterDigitization'] =  Math.min(2**app['bitDepth'], dynamicRangeInitial);
+        // app['dynamicRangeAfterDigitization'] =  Math.min(2**app['bitDepth'], dynamicRangeInitial);
     }
 
-    d3.select("#dynamicRangeAfterDigitization").text(Math.round(app["dynamicRangeAfterDigitization"]));
+    //d3.select("#dynamicRangeAfterDigitization").text(Math.round(app["dynamicRangeAfterDigitization"]));
     d3.select("#dynamicRangeBeforeDigitization").text(Math.round(app["dynamicRangeBeforeDigitization"]));
     d3.select("#resultNotes").html(noteHTML)
 }

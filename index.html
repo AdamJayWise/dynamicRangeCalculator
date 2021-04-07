@@ -7,6 +7,37 @@
                 font-family: 'Open Sans Condensed', sans-serif;
             }
 
+            input {
+                margin-bottom : 5px;
+            }
+
+            .section {
+                box-shadow: 3px 3px 5px #aaa;   
+                padding : 2px;
+                margin : 4px;
+            }
+
+            .sectionHeading {
+                font-weight: bold;
+                margin-bottom: 5px;
+                
+            }
+
+            .flexContainer {
+                display : flex;
+                flex-direction: row;
+            }
+
+            .flexColumn {
+                flex-grow : 1;
+                
+            }
+
+            .mainTitle {
+                font-size : 200%;
+                text-align: center;
+            }
+
             .article {
                 font-family: Arial, Helvetica, sans-serif;
                 font-size: 16px;
@@ -15,77 +46,17 @@
                 line-height : 24px;
             }
 
-            .mainEquation {
-                width : 754px;
-                display : flex;
-                flex-direction: row;
-                align-items : center;
-                justify-content : center;
-            }
-
-            .term {
-                position : relative;
-                box-shadow: 3px 3px 6px 1px gray;
-                padding : 2px;
-                font-size : 16px;
-                font-weight : bold;
-                display : inline-block;
-                margin : 3px;
-            }
-
-            .operator {
-                font-size : 25px;
-                font-weight : bold;
-                display : inline-block;
-                margin : 2px;
-            }
-
-            .eqInputDiv {
-                width : 100%;
-                
-            }
-
-            .inputLabel {
+            .entryLabel {
                 display : inline;
             }
 
-            .eqInput {
-                box-sizing:border-box;
-                width : 100%;
-                border : none;
-                background-color : #ddd;
-                
-            }
 
             #messages {
                 display : block;
-                width : 754px;
+                font-size: larger;
+                font-weight:bold;
                 text-align : center;
                 padding : 5px 0 0 0;
-            }
-
-            #countDiv {
-                width : 80px;
-            }
-
-            #photonDiv {
-                width : 80px;
-            }
-
-            #gainDiv {
-                width : 130px;
-            }
-
-            #offsetDiv {
-                width : 100px;
-            }
-
-            #emGainDiv {
-                width : 80px;
-            }
-
-            #qeDiv {
-                width : 120px;
             }
 
             .tipButton {
@@ -127,6 +98,14 @@
                 left : 0px;
             }
 
+            select {
+                width : 100%;
+            }
+
+            #resultNotes {
+                display : inline;
+            }
+
 
 
         </style>
@@ -134,48 +113,77 @@
 
 <body>
 
-    Dynamic Range Calculator
+    <div class = "mainTitle">Dynamic Range Calculator</div>
 
-    <div class = 'article'>
-        Choose a pre-defined camera or manually enter values to continue
-    </div>
 
-    <hr>
-
-    <!-- select to choose camera -->
-    <select id = "cameraSelect"></select><br>
-
-    <!-- select to choose readout mode -->
-    <select id = "modeSelect"></select>
+ 
 
     <hr>
 
-    <!--radio button group to choose camera type-->
-    <div id = "cameraTypeChooser">
-        <input type="radio" id="CCDType" name="cameraTypeValue" value="CCD" checked>
-        <label for="CCDType">CCD</label><br>
-        <input type="radio" id="EMCCDType" name="cameraTypeValue" value="EMCCD">
-        <label for="EMCCDType">EMCCD</label><br>
-        <input type="radio" id="sCMOSType" name="cameraTypeValue" value="sCMOS">
-        <label for="sCMOSType">sCMOS</label>
+    <div class = "section">
+        <div class = "sectionHeading">Pre-Defined Settings</div>
+        <table>
+            <tr>
+                <!-- select to choose camera -->
+                <td>
+                    <div class = "entryLabel">Camera</div>
+                </td>
+                <td>
+                    <select id = "cameraSelect"></select>
+                </td>
+            </tr>
+
+            <tr>
+                    <!-- select to choose readout mode -->
+            <td><div class = "entryLabel">Readout Mode</div>
+            </td>
+            <td>
+            <select id = "modeSelect"></select>
+        </td>
+            </tr>
+
+        
+        </table>
+    </div>
+    
+
+    <div class = "flexContainer">
+
+    <div class = "flexColumn section">
+        <!--radio button group to choose camera type-->
+        <div class = "sectionHeading">Readout Type</div>
+        <div id = "cameraTypeChooser">
+            <input type="radio" id="CCDType" name="cameraTypeValue" value="CCD" checked>
+            <label for="CCDType">CCD</label><br>
+            <input type="radio" id="EMCCDType" name="cameraTypeValue" value="EMCCD">
+            <label for="EMCCDType">EMCCD</label><br>
+            <input type="radio" id="sCMOSType" name="cameraTypeValue" value="sCMOS">
+            <label for="sCMOSType">sCMOS</label>
+        </div>
     </div>
 
 
+    <div class = "flexColumn section">
+        <div class = "sectionHeading">Parameters</div>
+        <!--input to represent active area pixel well depth-->
+        <div id = "parameterInputs">
 
-    <!--input to represent active area pixel well depth-->
-    <div id = "parameterInputs">
-
+        </div>
     </div>
 
+    <div class = "flexColumn section">
+        <div class = "sectionHeading">Results & Notes</div>
+        <div id = "messages">
 
-    <div id = "messages">
-            Dynamic Range Before Digitization is : <span id = "dynamicRangeBeforeDigitization">-</span>
-            <br>
-            Dynamic Range After Digitization is : <span id = "dynamicRangeAfterDigitization">-</span>
-            <div id = "resultNotes"></div>
+                <div id = "resultNotes"></div>
+                Dynamic Range Before Digitization is : <span id = "dynamicRangeBeforeDigitization">-</span>
+                <br>
+                Dynamic Range After Digitization is : <span id = "dynamicRangeAfterDigitization">-</span>
+                
+        </div>
     </div>
 
-
+    </div><!--end flex container div-->
 
 </body>
     <script src = "js/d3.min.js"></script>
