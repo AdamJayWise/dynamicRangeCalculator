@@ -205,11 +205,11 @@ function calculateDynamicRange(){
 
         // find post-digitization dynamic range
         var effectiveWellDepth = Math.min( app["activeAreaWellDepth"], 2**app["bitDepth"] * app['sensitivity']) ;
-        noteHTML += "Effective well depth is " + Math.round(effectiveWellDepth) + " e<sup>-</sup>"
+        noteHTML += "Effective well depth is " + Math.round(effectiveWellDepth) + " e<sup>-</sup><br>"
         if (effectiveWellDepth < app["activeAreaWellDepth"]){
-            noteHTML += ", limited by bit depth at analog to digital conversion (ADC) .";
+            noteHTML += "Effective well depth is limited by bit depth at analog to digital conversion (ADC).<br>";
         }
-        app['dynamicRangeAfterDigitization'] =  effectiveWellDepth / app['readOutNoise'];
+        app['dynamicRangeAfterDigitization'] =  Math.min( 2**app['bitDepth'], effectiveWellDepth / app['readOutNoise']);
     }
 
     if ( app["cameraType"] == 'EMCCD'  ){
@@ -218,7 +218,7 @@ function calculateDynamicRange(){
         var effectiveWellDepth = app['gainRegisterWellDepth'] / app['EMGain'];
 
         noteHTML += "Effective read noise is " + Math.round(100 * app['readOutNoise'] / app['EMGain'])/100 + " e<sup>-</sup><br>"
-        noteHTML += "Effective well depth is " + Math.round(effectiveWellDepth) + " e<sup>-</sup>"
+        noteHTML += "Effective well depth is " + Math.round(effectiveWellDepth) + " e<sup>-</sup><br>"
         
         var dynamicRangeInitial =  effectiveWellDepth / effectiveReadNoise;
         app['dynamicRangeBeforeDigitization'] = dynamicRangeInitial;
@@ -228,10 +228,10 @@ function calculateDynamicRange(){
         }
 
         // find post-digitization dynamic range
-        // app['dynamicRangeAfterDigitization'] =  Math.min(2**app['bitDepth'], dynamicRangeInitial);
+        app['dynamicRangeAfterDigitization'] =  Math.min(2**app['bitDepth'], dynamicRangeInitial);
     }
 
-    //d3.select("#dynamicRangeAfterDigitization").text(Math.round(app["dynamicRangeAfterDigitization"]));
+    d3.select("#dynamicRangeAfterDigitization").text(Math.round(app["dynamicRangeAfterDigitization"]));
     d3.select("#dynamicRangeBeforeDigitization").text(Math.round(app["dynamicRangeBeforeDigitization"]));
     d3.select("#resultNotes").html(noteHTML)
 }
