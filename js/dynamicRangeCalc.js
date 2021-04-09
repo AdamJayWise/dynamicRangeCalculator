@@ -215,7 +215,7 @@ function calculateDynamicRange(){
         
         if (app["activeAreaWellDepth"] > app["effectiveWellDepth"]){
             console.log('ding');
-            app["wellDepthLimitation"] = "digitization of the active area <br> pixel well depth at this pre-amp gain";
+            app["wellDepthLimitation"] = "digitization of the active area pixel well depth at this pre-amp gain";
         }
 
         app["effectiveReadNoise"] = app["readOutNoise"];
@@ -237,7 +237,7 @@ function calculateDynamicRange(){
         var possibleLimits = [ app['gainRegisterWellDepth'] / app['EMGain'], app["activeAreaWellDepth"], (2**app["bitDepth"] * app["sensitivity"] / app["EMGain"])];
         app["effectiveWellDepth"] = d3.min(possibleLimits);
         var limitIndex = possibleLimits.indexOf(app['effectiveWellDepth']);
-        app["wellDepthLimitation"] = {0:"effective EM gain register depth", 1:"active area pixel well depth", 2:"digitization of the EM gain register at this pre-amp and EM gain"}[limitIndex];
+        app["wellDepthLimitation"] = {0:"effective EM gain register depth", 1:"active area pixel well depth", 2:"digitization of the EM gain register at this preamp & EM gain"}[limitIndex];
         
         app["naiveDynamicRange"] =  app["naiveWellDepth"] / app["effectiveReadNoise"];
 
@@ -247,15 +247,15 @@ function calculateDynamicRange(){
     } // END EMCCD calculations
 
     // update the notes with some info on the results of the calculation
-    noteHTML += "The largest signal possible is " + Math.round(app["naiveWellDepth"]) + "e<sup>-</sup> <br>";
+    noteHTML += "The largest signal is limited to" + Math.round(app["naiveWellDepth"]) + "e<sup>-</sup> <br>";
     noteHTML += "The smallest signal measureable at SNR=1 is " + Math.round(app["effectiveReadNoise"]) + "e<sup>-</sup> <br>";
-    noteHTML += "An estimate of the Dynamic Range is " + Math.round(app["naiveDynamicRange"]) + "<br>";
+    noteHTML += "A rough estimate of the Dynamic Range is " + Math.round(app["naiveDynamicRange"]) + "<br>";
     noteHTML += "<br>";
 
     if (app['naiveDynamicRange'] > app["dynamicRangeAfterDigitization"]){
 
         if (app['effectiveWellDepth'] < app['naiveWellDepth']){
-            noteHTML += "<span class = 'warning'>Effectively, the largest signal measureable is " + Math.round(app["effectiveWellDepth"]) + ",<br> limited by "  + app["wellDepthLimitation"] + "</span><br>";
+            noteHTML += "<span class = 'warning'>In the real world, the largest signal measureable is " + Math.round(app["effectiveWellDepth"]) + ",<br> limited by "  + app["wellDepthLimitation"] + "</span><br>";
         }
     
         noteHTML += "<span class = 'warning'>In practice, Dynamic Range will be closer to " + Math.round(app["dynamicRangeAfterDigitization"]) + "</span><br>";
