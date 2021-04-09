@@ -49,21 +49,21 @@ var cameras =  {
         "displayName" : "iXon Ultra 897",
         "emccd" : true,
         "readModes" : {
-            0 : {'displayName' : '17 MHz EM, 1x Preamp Gain', 'gain' : 15, 'noise' : 240, 'type' : 'EMCCD'},
-            1 : {'displayName' : '17 MHz EM, 2x Preamp Gain', 'gain' : 7.5, 'noise' : 120, 'type' : 'EMCCD'},
-            2 : {'displayName' : '17 MHz EM, 3x Preamp Gain', 'gain' : 5, 'noise' : 80, 'type' : 'EMCCD'},
+            0 : {'displayName' : '17 MHz EM, 1x Preamp Gain', 'gain' : 15, 'noise' : 240, 'type' : 'EMCCD', 'bitDepth' : 16},
+            1 : {'displayName' : '17 MHz EM, 2x Preamp Gain', 'gain' : 7.5, 'noise' : 120, 'type' : 'EMCCD', 'bitDepth' : 16},
+            2 : {'displayName' : '17 MHz EM, 3x Preamp Gain', 'gain' : 5, 'noise' : 80, 'type' : 'EMCCD', 'bitDepth' : 16},
 
-            3 : {'displayName' : '10 MHz EM, 1x Preamp Gain', 'gain' : 15, 'noise' : 130, 'type' : 'EMCCD'},
-            4 : {'displayName' : '10 MHz EM, 2x Preamp Gain', 'gain' : 7.5, 'noise' : 80, 'type' : 'EMCCD'},
-            5 : {'displayName' : '10 MHz EM, 3x Preamp Gain', 'gain' : 5, 'noise' : 60, 'type' : 'EMCCD'},
+            3 : {'displayName' : '10 MHz EM, 1x Preamp Gain', 'gain' : 15, 'noise' : 130, 'type' : 'EMCCD', 'bitDepth' : 16},
+            4 : {'displayName' : '10 MHz EM, 2x Preamp Gain', 'gain' : 7.5, 'noise' : 80, 'type' : 'EMCCD', 'bitDepth' : 16},
+            5 : {'displayName' : '10 MHz EM, 3x Preamp Gain', 'gain' : 5, 'noise' : 60, 'type' : 'EMCCD', 'bitDepth' : 16},
 
-            3 : {'displayName' : '5 MHz EM, 1x Preamp Gain', 'gain' : 15, 'noise' : 67, 'type' : 'EMCCD'},
-            4 : {'displayName' : '5 MHz EM, 2x Preamp Gain', 'gain' : 7.5, 'noise' : 44, 'type' : 'EMCCD'},
-            5 : {'displayName' : '5 MHz EM, 3x Preamp Gain', 'gain' : 5, 'noise' : 37, 'type' : 'EMCCD'},
+            3 : {'displayName' : '5 MHz EM, 1x Preamp Gain', 'gain' : 15, 'noise' : 67, 'type' : 'EMCCD', 'bitDepth' : 16},
+            4 : {'displayName' : '5 MHz EM, 2x Preamp Gain', 'gain' : 7.5, 'noise' : 44, 'type' : 'EMCCD', 'bitDepth' : 16},
+            5 : {'displayName' : '5 MHz EM, 3x Preamp Gain', 'gain' : 5, 'noise' : 37, 'type' : 'EMCCD', 'bitDepth' : 16},
 
-            3 : {'displayName' : '3 MHz Conventional, 1x Preamp Gain', 'gain' : 3.8, 'noise' : 13, 'type' : 'CCD'},
-            4 : {'displayName' : '3 MHz Conventional, 2x Preamp Gain', 'gain' : 3.0, 'noise' : 11, 'type' : 'CCD'},
-            5 : {'displayName' : '3 MHz Conventional, 3x Preamp Gain', 'gain' : 1.4, 'noise' : 9, 'type' : 'CCD'},
+            3 : {'displayName' : '3 MHz Conventional, 1x Preamp Gain', 'gain' : 3.8, 'noise' : 13, 'type' : 'CCD', 'bitDepth' : 16},
+            4 : {'displayName' : '3 MHz Conventional, 2x Preamp Gain', 'gain' : 3.0, 'noise' : 11, 'type' : 'CCD', 'bitDepth' : 16},
+            5 : {'displayName' : '3 MHz Conventional, 3x Preamp Gain', 'gain' : 1.4, 'noise' : 9, 'type' : 'CCD', 'bitDepth' : 16},
         },
         "activeAreaWellDepth" : 180000,
         "gainRegisterWellDepth" : 800000, 
@@ -128,6 +128,8 @@ modeSelect.on("change", function(){
     d3.select("#activeAreaWellDepthInput").property("value", cameras[app.activeCamera]["activeAreaWellDepth"]).dispatch("change");
     d3.select("#readOutNoiseInput").property("value", cameras[app.activeCamera]["readModes"][app.activeMode]['noise']).dispatch("change");
     d3.select("#sensitivityInput").property("value", cameras[app.activeCamera]["readModes"][app.activeMode]['gain']).dispatch("change");
+    d3.select("#bitDepthInput").property("value", cameras[app.activeCamera]["readModes"][app.activeMode]['bitDepth']).dispatch("change");
+
 
     if(app.cameraType=="EMCCD"){
         d3.select("#EMGainInput").property("value", cameras[app.activeCamera]["readModes"][app.activeMode]['noise']).dispatch("change");
@@ -184,7 +186,7 @@ paramSetup.forEach(function(p){
     newInput.on('change', function(){
         console.log(this.value);
         if (Number(this.value) && (this.value>0) ){
-            app[p["param"]] = this.value;
+            app[p["param"]] = Number(this.value);
             calculateDynamicRange();
         }
     })
@@ -195,44 +197,76 @@ paramSetup.forEach(function(p){
 
 function calculateDynamicRange(){
 
+    // let's re-do this to generate some important stats regardless of type, and then print out the results at the end
+
+
     // string of notes/comments to output with results, starts empty
     var noteHTML = '';
+    app['wellDepthLimitation'] = '';
 
     if ( (app["cameraType"] == 'CCD') || (app["cameraType"] == 'sCMOS') ){
         // in this case, dynamic range = min( (well depth / pre-amp gain) / readnoise, 2^bitdepth)
-        var dynamicRangeInitial =  ( app["activeAreaWellDepth"] ) / app['readOutNoise'];
-        app['dynamicRangeBeforeDigitization'] = dynamicRangeInitial;
+        app["naiveWellDepth"] = app["activeAreaWellDepth"];
+        app["naiveDynamicRange"] =  ( app["activeAreaWellDepth"] ) / app['readOutNoise'];
 
         // find post-digitization dynamic range
-        var effectiveWellDepth = Math.min( app["activeAreaWellDepth"], 2**app["bitDepth"] * app['sensitivity']) ;
-        noteHTML += "Effective well depth is " + Math.round(effectiveWellDepth) + " e<sup>-</sup><br>"
-        if (effectiveWellDepth < app["activeAreaWellDepth"]){
-            noteHTML += "Effective well depth is limited by bit depth at analog to digital conversion (ADC).<br>";
+        
+        app["effectiveWellDepth"] = Math.min( app["activeAreaWellDepth"], 2**app["bitDepth"] * app['sensitivity']) ;
+        
+        if (app["activeAreaWellDepth"] > app["effectiveWellDepth"]){
+            console.log('ding');
+            app["wellDepthLimitation"] = "digitization of the active area <br> pixel well depth at this pre-amp gain";
         }
-        app['dynamicRangeAfterDigitization'] =  Math.min( 2**app['bitDepth'], effectiveWellDepth / app['readOutNoise']);
-    }
+
+        app["effectiveReadNoise"] = app["readOutNoise"];
+        app['dynamicRangeAfterDigitization'] =  app["effectiveWellDepth"] / app['readOutNoise'];
+    } // END calculations if CCD or SCMOS... may break out scmos later but act the same for now
 
     if ( app["cameraType"] == 'EMCCD'  ){
         // in this case, dynamic range = min( (well depth / pre-amp gain) / readnoise, 2^bitdepth)
-        var effectiveReadNoise = Math.max(1, app['readOutNoise'] / app['EMGain']);
-        var effectiveWellDepth = app['gainRegisterWellDepth'] / app['EMGain'];
+        app["effectiveReadNoise"] = Math.max(1, app['readOutNoise'] / app['EMGain']);
+        // for an EMCCD, the naive well depth is either the active area or gain register well depth depending on the em gain
+        app["naiveWellDepth"] = Math.min( app['gainRegisterWellDepth'] / app['EMGain'], app["activeAreaWellDepth"]);
 
-        noteHTML += "Effective read noise is " + Math.round(100 * app['readOutNoise'] / app['EMGain'])/100 + " e<sup>-</sup><br>"
-        noteHTML += "Effective well depth is " + Math.round(effectiveWellDepth) + " e<sup>-</sup><br>"
-        
-        var dynamicRangeInitial =  effectiveWellDepth / effectiveReadNoise;
-        app['dynamicRangeBeforeDigitization'] = dynamicRangeInitial;
-
-        if (dynamicRangeInitial > 2**app['bitDepth']){
-            noteHTML += 'Dynamic range is limited by bit depth <br>';
+        // if em gain is low, note that active area limits this
+        if (app['gainRegisterWellDepth'] / app['EMGain'] > app["activeAreaWellDepth"]){
+            noteHTML += "<span class = 'warning'> At low EM gains like this, active area pixels <br> saturate before the gain registers!</span><br><br>"
         }
 
+        // the effective well depth is the min of 2^16, real well depth / em gain, and 
+        var possibleLimits = [ app['gainRegisterWellDepth'] / app['EMGain'], app["activeAreaWellDepth"], (2**app["bitDepth"] * app["sensitivity"] / app["EMGain"])];
+        app["effectiveWellDepth"] = d3.min(possibleLimits);
+        var limitIndex = possibleLimits.indexOf(app['effectiveWellDepth']);
+        app["wellDepthLimitation"] = {0:"effective EM gain register depth", 1:"active area pixel well depth", 2:"digitization of the EM gain register at this pre-amp and EM gain"}[limitIndex];
+        
+        app["naiveDynamicRange"] =  app["naiveWellDepth"] / app["effectiveReadNoise"];
+
         // find post-digitization dynamic range
-        app['dynamicRangeAfterDigitization'] =  Math.min(2**app['bitDepth'], dynamicRangeInitial);
+        app['dynamicRangeAfterDigitization'] =  Math.min(app["effectiveWellDepth"] / app["effectiveReadNoise"]);
+
+    } // END EMCCD calculations
+
+    // update the notes with some info on the results of the calculation
+    noteHTML += "The largest signal possible is " + Math.round(app["naiveWellDepth"]) + "e<sup>-</sup> <br>";
+    noteHTML += "The smallest signal measureable at SNR=1 is " + Math.round(app["effectiveReadNoise"]) + "e<sup>-</sup> <br>";
+    noteHTML += "An estimate of the Dynamic Range is " + Math.round(app["naiveDynamicRange"]) + "<br>";
+    noteHTML += "<br>";
+
+    if (app['naiveDynamicRange'] > app["dynamicRangeAfterDigitization"]){
+
+        if (app['effectiveWellDepth'] < app['naiveWellDepth']){
+            noteHTML += "<span class = 'warning'>Effectively, the largest signal measureable is " + Math.round(app["effectiveWellDepth"]) + ",<br> limited by "  + app["wellDepthLimitation"] + "</span><br>";
+        }
+    
+        noteHTML += "<span class = 'warning'>In practice, Dynamic Range will be closer to " + Math.round(app["dynamicRangeAfterDigitization"]) + "</span><br>";
+        
+        
     }
 
-    d3.select("#dynamicRangeAfterDigitization").text(Math.round(app["dynamicRangeAfterDigitization"]));
-    d3.select("#dynamicRangeBeforeDigitization").text(Math.round(app["dynamicRangeBeforeDigitization"]));
+    noteHTML += "<br>";
+
+    noteHTML += "Questions about any of this? <br> <a href = 'https://andor.oxinst.com/contact'>Contact us!</a>"
+    
     d3.select("#resultNotes").html(noteHTML)
 }
 
