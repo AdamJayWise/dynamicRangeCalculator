@@ -230,7 +230,7 @@ function calculateDynamicRange(){
 
         // if em gain is low, note that active area limits this
         if (app['gainRegisterWellDepth'] / app['EMGain'] > app["activeAreaWellDepth"]){
-            noteHTML += "<span class = 'warning'> At low EM gains like this, active area pixels <br> saturate before the gain registers!</span><br><br>"
+            noteHTML += "<span class = 'warning'> At low EM gains, active area pixels size limits the max signal</span><br><br>"
         }
 
         // the effective well depth is the min of 2^16, real well depth / em gain, and 
