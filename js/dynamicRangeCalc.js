@@ -45,7 +45,7 @@ var app = {
 
 var cameras =  {
     
-    "iXon888UltraBV" : {
+    "iXon897UltraBV" : {
         "displayName" : "iXon Ultra 897",
         "emccd" : true,
         "readModes" : {
@@ -57,16 +57,50 @@ var cameras =  {
             4 : {'displayName' : '10 MHz EM, 2x Preamp Gain', 'gain' : 7.5, 'noise' : 80, 'type' : 'EMCCD', 'bitDepth' : 16},
             5 : {'displayName' : '10 MHz EM, 3x Preamp Gain', 'gain' : 5, 'noise' : 60, 'type' : 'EMCCD', 'bitDepth' : 16},
 
-            3 : {'displayName' : '5 MHz EM, 1x Preamp Gain', 'gain' : 15, 'noise' : 67, 'type' : 'EMCCD', 'bitDepth' : 16},
-            4 : {'displayName' : '5 MHz EM, 2x Preamp Gain', 'gain' : 7.5, 'noise' : 44, 'type' : 'EMCCD', 'bitDepth' : 16},
-            5 : {'displayName' : '5 MHz EM, 3x Preamp Gain', 'gain' : 5, 'noise' : 37, 'type' : 'EMCCD', 'bitDepth' : 16},
+            6 : {'displayName' : '5 MHz EM, 1x Preamp Gain', 'gain' : 15, 'noise' : 67, 'type' : 'EMCCD', 'bitDepth' : 16},
+            7 : {'displayName' : '5 MHz EM, 2x Preamp Gain', 'gain' : 7.5, 'noise' : 44, 'type' : 'EMCCD', 'bitDepth' : 16},
+            8 : {'displayName' : '5 MHz EM, 3x Preamp Gain', 'gain' : 5, 'noise' : 37, 'type' : 'EMCCD', 'bitDepth' : 16},
 
-            3 : {'displayName' : '3 MHz Conventional, 1x Preamp Gain', 'gain' : 3.8, 'noise' : 13, 'type' : 'CCD', 'bitDepth' : 16},
-            4 : {'displayName' : '3 MHz Conventional, 2x Preamp Gain', 'gain' : 3.0, 'noise' : 11, 'type' : 'CCD', 'bitDepth' : 16},
-            5 : {'displayName' : '3 MHz Conventional, 3x Preamp Gain', 'gain' : 1.4, 'noise' : 9, 'type' : 'CCD', 'bitDepth' : 16},
+            9 : {'displayName' : '3 MHz Conventional, 1x Preamp Gain', 'gain' : 3.8, 'noise' : 13, 'type' : 'CCD', 'bitDepth' : 16},
+            10 : {'displayName' : '3 MHz Conventional, 2x Preamp Gain', 'gain' : 3.0, 'noise' : 11, 'type' : 'CCD', 'bitDepth' : 16},
+            11 : {'displayName' : '3 MHz Conventional, 3x Preamp Gain', 'gain' : 1.4, 'noise' : 9, 'type' : 'CCD', 'bitDepth' : 16},
+
+            12 : {'displayName' : '1 MHz Conventional, 1x Preamp Gain', 'gain' : 3.8, 'noise' : 7.1, 'type' : 'CCD', 'bitDepth' : 16},
+            13 : {'displayName' : '1 MHz Conventional, 2x Preamp Gain', 'gain' : 2.9, 'noise' : 6.3, 'type' : 'CCD', 'bitDepth' : 16},
+            14 : {'displayName' : '1 MHz Conventional, 3x Preamp Gain', 'gain' : 1.3, 'noise' : 5.3, 'type' : 'CCD', 'bitDepth' : 16},
+
+            15 : {'displayName' : '0.08 MHz Conventional, 1x Preamp Gain', 'gain' : 3.8, 'noise' : 3.4, 'type' : 'CCD', 'bitDepth' : 16},
+            16 : {'displayName' : '0.08 MHz Conventional, 2x Preamp Gain', 'gain' : 3.0, 'noise' : 3.2, 'type' : 'CCD', 'bitDepth' : 16},
+            17 : {'displayName' : '0.08 MHz Conventional, 3x Preamp Gain', 'gain' : 1.4, 'noise' : 2.8, 'type' : 'CCD', 'bitDepth' : 16},
         },
         "activeAreaWellDepth" : 180000,
         "gainRegisterWellDepth" : 800000, 
+    },
+
+    "iXon888UltraBV" : {
+        "displayName" : "iXon Ultra 888",
+        "emccd" : true,
+        "readModes" : {
+            0 : {'displayName' : '30 MHz EM, 1x Preamp Gain', 'gain' : 18.5, 'noise' : 256, 'type' : 'EMCCD', 'bitDepth' : 16},
+            1 : {'displayName' : '30 MHz EM, 2x Preamp Gain', 'gain' : 5.6, 'noise' : 140, 'type' : 'EMCCD', 'bitDepth' : 16},
+            
+            2 : {'displayName' : '20 MHz EM, 1x Preamp Gain', 'gain' : 17.2, 'noise' : 157, 'type' : 'EMCCD', 'bitDepth' : 16},
+            3 : {'displayName' : '20 MHz EM, 2x Preamp Gain', 'gain' : 4.7, 'noise' : 72, 'type' : 'EMCCD', 'bitDepth' : 16},
+            
+            4 : {'displayName' : '10 MHz EM, 1x Preamp Gain', 'gain' : 16.3, 'noise' : 81, 'type' : 'EMCCD', 'bitDepth' : 16},
+            5 : {'displayName' : '10 MHz EM, 2x Preamp Gain', 'gain' : 4, 'noise' : 41, 'type' : 'EMCCD', 'bitDepth' : 16},
+
+            6 : {'displayName' : '1 MHz EM, 1x Preamp Gain', 'gain' : 16, 'noise' : 24, 'type' : 'EMCCD', 'bitDepth' : 16},
+            7 : {'displayName' : '1 MHz EM, 2x Preamp Gain', 'gain' : 4, 'noise' : 12, 'type' : 'EMCCD', 'bitDepth' : 16},
+            
+            8 : {'displayName' : '1 MHz Conventional, 1x Preamp Gain', 'gain' : 3.3, 'noise' : 6.5, 'type' : 'CCD', 'bitDepth' : 16},
+            9 : {'displayName' : '1 MHz Conventional, 2x Preamp Gain', 'gain' : 0.8, 'noise' : 4.8, 'type' : 'CCD', 'bitDepth' : 16},
+            
+            10 : {'displayName' : '0.1 MHz Conventional, 1x Preamp Gain', 'gain' : 3.3, 'noise' : 7, 'type' : 'CCD', 'bitDepth' : 16},
+            11 : {'displayName' : '0.1 MHz Conventional, 2x Preamp Gain', 'gain' : 0.8, 'noise' : 3, 'type' : 'CCD', 'bitDepth' : 16},
+        },
+        "activeAreaWellDepth" : 80000,
+        "gainRegisterWellDepth" : 730000, 
     },
 
     /** 
@@ -219,7 +253,7 @@ function calculateDynamicRange(){
         }
 
         app["effectiveReadNoise"] = app["readOutNoise"];
-        app['dynamicRangeAfterDigitization'] =  app["effectiveWellDepth"] / app['readOutNoise'];
+        app['dynamicRangeAfterDigitization'] =  Math.min(2**app['bitDepth'], app["effectiveWellDepth"] / app['readOutNoise']);
     } // END calculations if CCD or SCMOS... may break out scmos later but act the same for now
 
     if ( app["cameraType"] == 'EMCCD'  ){
@@ -256,6 +290,10 @@ function calculateDynamicRange(){
 
         if (app['effectiveWellDepth'] < app['naiveWellDepth']){
             noteHTML += "<span class = 'warning'>In the real world, the largest signal measureable is " + Math.round(app["effectiveWellDepth"]) + ",<br> limited by "  + app["wellDepthLimitation"] + "</span><br>";
+        }
+
+        if(app['dynamicRangeAfterDigitization'] == 2**app['bitDepth']){
+            noteHTML +=  "<span class = 'warning'>Dynamic Range is limited by digitization bit depth <br> </span>";
         }
     
         noteHTML += "<span class = 'warning'>In practice, Dynamic Range will be closer to " + Math.round(app["dynamicRangeAfterDigitization"]) + "</span><br><br>";
