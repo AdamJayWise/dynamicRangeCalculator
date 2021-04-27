@@ -247,8 +247,8 @@ function calculateDynamicRange(){
     } // END EMCCD calculations
 
     // update the notes with some info on the results of the calculation
-    noteHTML += "The largest signal is limited to" + Math.round(app["naiveWellDepth"]) + "e<sup>-</sup> <br>";
-    noteHTML += "The smallest signal measureable at SNR=1 is " + Math.round(app["effectiveReadNoise"]) + "e<sup>-</sup> <br>";
+    noteHTML += "The largest measureable signal is limited to " + Math.round(app["naiveWellDepth"]) + " e<sup>-</sup> <br>";
+    noteHTML += "The smallest measureable signal at SNR = 1 is " + Math.round(app["effectiveReadNoise"]) + " e<sup>-</sup> <br>";
     noteHTML += "A rough estimate of the Dynamic Range is " + Math.round(app["naiveDynamicRange"]) + "<br>";
     noteHTML += "<br>";
 
@@ -258,14 +258,14 @@ function calculateDynamicRange(){
             noteHTML += "<span class = 'warning'>In the real world, the largest signal measureable is " + Math.round(app["effectiveWellDepth"]) + ",<br> limited by "  + app["wellDepthLimitation"] + "</span><br>";
         }
     
-        noteHTML += "<span class = 'warning'>In practice, Dynamic Range will be closer to " + Math.round(app["dynamicRangeAfterDigitization"]) + "</span><br>";
+        noteHTML += "<span class = 'warning'>In practice, Dynamic Range will be closer to " + Math.round(app["dynamicRangeAfterDigitization"]) + "</span><br><br>";
         
         
     }
 
-    noteHTML += "<br>";
+    //noteHTML += "<br>";
 
-    noteHTML += "Questions about any of this? <br> <a href = 'https://andor.oxinst.com/contact'>Contact us!</a>"
+    noteHTML += "Questions? <br> <a href = 'https://andor.oxinst.com/contact'>Contact us</a>"
     
     d3.select("#resultNotes").html(noteHTML)
 }
