@@ -25,6 +25,8 @@
                 font-weight: bold;
                 margin-bottom: 5px;
                 text-align: center;
+                text-decoration: underline;
+                font-size: 120%;
             }
 
             .flexContainer {
@@ -33,8 +35,10 @@
             }
 
             .flexColumn {
-                flex-grow : 1;
+                
+                width: 400px;
                 padding: 10px;
+                flex-grow : 1;
             }
 
             .mainTitle {
@@ -116,37 +120,44 @@
 
 <body>
 
-    <div class = "mainTitle">Dynamic Range Calculator</div>
-
-
- 
+    <div class = "mainTitle">Advanced Dynamic Range Calculator</div>
 
     <hr>
 
-    <div class = "section">
-        <div class = "sectionHeading">Pre-Defined Settings</div>
-        <table>
-            <tr>
-                <!-- select to choose camera -->
-                <td>
-                    <div class = "entryLabel">Camera</div>
-                </td>
-                <td>
-                    <select id = "cameraSelect"></select>
-                </td>
-            </tr>
+    <div class = "flexContainer">
 
-            <tr>
-                    <!-- select to choose readout mode -->
-            <td><div class = "entryLabel">Readout Mode</div>
+        <div class = "section flexColumn">
+            <div class = "sectionHeading">Pre-Defined Settings</div>
+            <table>
+                <tr>
+                    <!-- select to choose camera -->
+                    <td>
+                        <div class = "entryLabel">Camera</div>
+                    </td>
+                    <td>
+                        <select id = "cameraSelect"></select>
+                    </td>
+                </tr>
+
+                <tr>
+                        <!-- select to choose readout mode -->
+                <td><div class = "entryLabel">Readout Mode</div>
+                </td>
+                <td>
+                <select id = "modeSelect"></select>
             </td>
-            <td>
-            <select id = "modeSelect"></select>
-        </td>
-            </tr>
+                </tr>
+
+            
+            </table>
+        </div>
 
         
-        </table>
+        <div class = "section flexColumn">
+            <div class = "sectionHeading">Note</div>
+            This calculator provides a more realistic model of effective dynamic range, including several key bottlenecks in scientific cameras.  Choose a pre-defined camera and readout mode, or enter camera parameters manually.
+        </div>
+
     </div>
     
 
@@ -175,7 +186,7 @@
     </div>
 
     <div class = "flexColumn section">
-        <div class = "sectionHeading">Results & Notes</div>
+        <div class = "sectionHeading">Results</div>
         <div id = "messages">
 
                 <div id = "resultNotes"></div>
