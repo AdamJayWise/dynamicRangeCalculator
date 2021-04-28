@@ -113,6 +113,15 @@
                 display : inline;
             }
 
+            #paramSection {
+                width : 200px;
+            }
+
+            #typeSection {
+                width : 200px;
+            }
+
+
 
 
         </style>
@@ -155,7 +164,7 @@
         
         <div class = "section flexColumn">
             <div class = "sectionHeading">Note</div>
-            This calculator provides a more realistic model of effective dynamic range, including several key bottlenecks in scientific cameras.  Choose a pre-defined camera and readout mode, or enter camera parameters manually.
+            This calculator provides a more realistic model of effective dynamic range, including several key bottlenecks in scientific cameras.  Choose a pre-defined camera and readout mode, or enter camera parameters manually.  Preset parameters are approximate and for education purposes only.
         </div>
 
     </div>
@@ -163,7 +172,7 @@
 
     <div class = "flexContainer">
 
-    <div class = "flexColumn section">
+    <div class = "flexColumn section" id = "typeSection">
         <!--radio button group to choose camera type-->
         <div class = "sectionHeading">Sensor Type</div>
         <div id = "cameraTypeChooser">
@@ -177,7 +186,7 @@
     </div>
 
 
-    <div class = "flexColumn section">
+    <div class = "flexColumn section" id = "paramSection">
         <div class = "sectionHeading">Parameters</div>
         <!--input to represent active area pixel well depth-->
         <div id = "parameterInputs">

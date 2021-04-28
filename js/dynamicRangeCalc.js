@@ -103,6 +103,18 @@ var cameras =  {
         "gainRegisterWellDepth" : 730000, 
     },
 
+    "sona42b11" : {
+        "displayName" : "Sona 4.2B-11",
+        "emccd" : false,
+        "readModes" : {
+            0 : {'displayName' : '200 MHz, 12-Bit (Fast Framerate)', 'gain' : 0.6, 'noise' : 1.6, 'type' : 'sCMOS', 'bitDepth' : 12},
+            1 : {'displayName' : '200 MHz, 16-Bit (High Dynamic Range)', 'gain' : 1.2, 'noise' : 1.6, 'type' : 'sCMOS', 'bitDepth' : 16},
+            
+
+        },
+        "activeAreaWellDepth" : 85000,
+    },
+
     /** 
     "ikonL936BV" : {
         "displayName" : "iKon-L 936 BV/BU2/FI",
@@ -249,7 +261,7 @@ function calculateDynamicRange(){
         
         if (app["activeAreaWellDepth"] > app["effectiveWellDepth"]){
             console.log('ding');
-            app["wellDepthLimitation"] = "digitization of the active area pixel well depth at this pre-amp gain";
+            app["wellDepthLimitation"] = "digitization of the active area pixel well depth with this sensitivity";
         }
 
         app["effectiveReadNoise"] = app["readOutNoise"];
@@ -281,22 +293,22 @@ function calculateDynamicRange(){
     } // END EMCCD calculations
 
     // update the notes with some info on the results of the calculation
-    noteHTML += "The largest measureable signal is limited to " + Math.round(app["naiveWellDepth"]) + " e<sup>-</sup> <br>";
-    noteHTML += "The smallest measureable signal at SNR = 1 is " + Math.round(app["effectiveReadNoise"]) + " e<sup>-</sup> <br>";
-    noteHTML += "A rough estimate of the Dynamic Range is " + Math.round(app["naiveDynamicRange"]) + "<br>";
+    noteHTML += "The largest measureable signal is " + Math.round(app["naiveWellDepth"]) + " e<sup>-</sup> <br>";
+    noteHTML += "The smallest measureable signal at SNR = 1 is " + Math.round(100*app["effectiveReadNoise"])/100 + " e<sup>-</sup> <br>";
+    noteHTML += "Dyamic Range is " + Math.round(app["naiveDynamicRange"]) + " : 1<br>";
     noteHTML += "<br>";
 
     if (app['naiveDynamicRange'] > app["dynamicRangeAfterDigitization"]){
 
         if (app['effectiveWellDepth'] < app['naiveWellDepth']){
-            noteHTML += "<span class = 'warning'>In the real world, the largest signal measureable is " + Math.round(app["effectiveWellDepth"]) + ",<br> limited by "  + app["wellDepthLimitation"] + "</span><br>";
+            noteHTML += "<span class = 'warning'>In the real world, the largest signal measureable is " + Math.round(app["effectiveWellDepth"]) + " e<sup>-</sup>,<br> limited by "  + app["wellDepthLimitation"] + "</span><br>";
         }
 
         if(app['dynamicRangeAfterDigitization'] == 2**app['bitDepth']){
             noteHTML +=  "<span class = 'warning'>Dynamic Range is limited by digitization bit depth <br> </span>";
         }
     
-        noteHTML += "<span class = 'warning'>In practice, Dynamic Range will be closer to " + Math.round(app["dynamicRangeAfterDigitization"]) + "</span><br><br>";
+        noteHTML += "<span class = 'warning'>In practice, Dynamic Range will be closer to " + Math.round(app["dynamicRangeAfterDigitization"]) + " : 1</span><br><br>";
         
         
     }
